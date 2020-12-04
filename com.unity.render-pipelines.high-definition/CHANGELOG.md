@@ -66,11 +66,6 @@ The version number for this package has increased due to a version update of a r
 - Adding an "Include For Ray Tracing" toggle on lights to allow the user to exclude them when ray tracing is enabled in the frame settings of a camera.
 - Added fog volumetric scattering support for path tracing.
 - Added new algorithm for SSR with temporal accumulation
-- Added quality preset of the new volumetric fog parameters.
-- Added missing documentation for unsupported SG RT nodes and light's include for raytracing attrbute.
-- Added documentation for LODs not being supported by ray tracing.
-- Added more options to control how the component of motion vectors coming from the camera transform will affect the motion blur with new clamping modes.
-- Added anamorphism support for phsyical DoF, switched to blue noise sampling and fixed tiling artifacts.
 
 ### Fixed
 - Fixed an issue where the Exposure Shader Graph node had clipped text. (case 1265057)

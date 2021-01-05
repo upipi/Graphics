@@ -4,9 +4,9 @@ from ...shared.utr_utils import get_repeated_utr_calls
 
 def _cmd_base(project_folder, platform, utr_calls, editor):
     base = [
-        f'curl -s {UTR_INSTALL_URL}.bat --output {TEST_PROJECTS_DIR}/{project_folder}/utr.bat',
+        f'curl -s {UTR_INSTALL_URL}.bat --output utr.bat',
         f'pip install unity-downloader-cli --index-url {UNITY_DOWNLOADER_CLI_URL} --upgrade',
-        f'cd {TEST_PROJECTS_DIR}/{project_folder} && unity-downloader-cli { get_unity_downloader_cli_cmd(editor, platform["os"], cd=True) } {"".join([f"-c {c} " for c in platform["components"]])} --wait --published-only',
+        f'unity-downloader-cli { get_unity_downloader_cli_cmd(editor, platform["os"], cd=True) } {"".join([f"-c {c} " for c in platform["components"]])} --wait --published-only',
     ]
     
     for utr_args in utr_calls:
@@ -15,7 +15,7 @@ def _cmd_base(project_folder, platform, utr_calls, editor):
          set /p GIT_REVISIONDATE=<revdate.tmp
          echo %GIT_REVISIONDATE%
          del revdate.tmp
-         cd {TEST_PROJECTS_DIR}/{project_folder} && utr {" ".join(utr_args)}'''))
+         utr {" ".join(utr_args)}'''))
     
     return base
 
@@ -43,13 +43,13 @@ def cmd_playmode(project_folder, platform, api, test_platform, editor, build_con
 
 def cmd_standalone(project_folder, platform, api, test_platform, editor, build_config, color_space):
 
-    base = [f'curl -s {UTR_INSTALL_URL}.bat --output {TEST_PROJECTS_DIR}/{project_folder}/utr.bat']
+    base = [f'curl -s {UTR_INSTALL_URL}.bat --output utr.bat']
     if 'universalgraphicstest' in project_folder.lower():
         base.append('cd Tools && powershell -command ". .\\Unity.ps1; Set-ScreenResolution -width 1920 -Height 1080"')
     
     utr_calls = get_repeated_utr_calls(test_platform, platform, api, build_config, color_space, project_folder)
     for utr_args in utr_calls:
-        base.append(f'cd {TEST_PROJECTS_DIR}/{project_folder} && utr {" ".join(utr_args)}')
+        base.append(f'utr {" ".join(utr_args)}')
     
     return base
 

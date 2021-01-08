@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added a cloud system and the CloudLayer volume override.
 - Added a setting in the HDRP asset to change the Density Volume mask resolution of being locked at 32x32x32 (HDRP Asset > Lighting > Volumetrics > Max Density Volume Size).
 - Added a Falloff Mode (Linear or Exponential) in the Density Volume for volume blending with Blend Distance.
+- Added a history rejection criterion based on if the pixel was moving in world space (case 1302392).
 
 ### Fixed
 - Fixed probe volumes debug views.

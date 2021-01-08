@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Decreased the minimal Fog Distance value in the Density Volume to 0.05.
 - Changed the convergence time of ssgi to 16 frames and the preset value
 - Improved robustness of volumetric sampling in path tracing (case 1295187).
+- Unifying the history validation pass so that it is only done once for the whole frame and not per effect.
 
 ## [10.3.0] - 2020-12-01
 

@@ -9,6 +9,9 @@ namespace UnityEditor.Rendering.HighDefinition
 
         public override bool HasPreviewGUI()
         {
+            if (fallbackEditor != null)
+                return fallbackEditor.HasPreviewGUI();
+
             if (targets.Length > 1)
                 return false;  // We only handle one preview for reflection probes
 
@@ -31,6 +34,12 @@ namespace UnityEditor.Rendering.HighDefinition
 
         public override void OnPreviewSettings()
         {
+            if (fallbackEditor != null)
+            {
+                fallbackEditor.OnPreviewSettings();
+                return;
+            }
+
             if (!ValidPreviewSetup()
                 || m_CubemapEditor == null)
                 return;
@@ -40,6 +49,12 @@ namespace UnityEditor.Rendering.HighDefinition
 
         public override void OnPreviewGUI(Rect position, GUIStyle style)
         {
+            if (fallbackEditor != null)
+            {
+                fallbackEditor.OnPreviewGUI(position, style);
+                return;
+            }
+
             if (!ValidPreviewSetup()
                 || m_CubemapEditor == null)
             {

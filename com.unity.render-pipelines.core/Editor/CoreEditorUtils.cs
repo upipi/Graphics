@@ -856,6 +856,24 @@ namespace UnityEditor.Rendering
         public static void RemoveMaterialKeywords(Material material)
             => material.shaderKeywords = null;
 
+        /// <summary>Tests if AdditionalData components are present or can be added</summary>
+        /// <typeparam name="T">The type of the AdditionalData component</typeparam>
+        /// <param name="targets">The object to seek for AdditionalData</param>
+        /// <returns>return false means calling GetAdditionalData will fail.</returns>
+        public static bool CanGetAdditionalData<T>(UnityObject[] targets)
+        {
+            // If a target is readonly, and it doesn't contain the additional data component, we won't be able to add it
+            for (int i = 0; i < targets.Length; i++)
+            {
+                var go = ((Component)targets[i]).gameObject;
+                int hideFlags = (int)go.hideFlags;
+                if ((hideFlags & (int)HideFlags.NotEditable) > 0 && go.GetComponent<T>() == null)
+                    return false;
+            }
+
+            return true;
+        }
+
         /// <summary>Get the AdditionalData of the given component </summary>
         /// <typeparam name="T">The type of the AdditionalData component</typeparam>
         /// <param name="targets">The object to seek for AdditionalData</param>

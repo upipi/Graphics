@@ -32,8 +32,16 @@ namespace UnityEditor.Rendering.HighDefinition
         Dictionary<Object, TSerialized> m_SerializedHDProbePerTarget;
         protected HDProbe[] m_TypedTargets;
 
+        protected Editor fallbackEditor = null;
+
         public override void OnInspectorGUI()
         {
+            if (fallbackEditor != null)
+            {
+                fallbackEditor.OnInspectorGUI();
+                return;
+            }
+
             m_SerializedHDProbe.Update();
             EditorGUI.BeginChangeCheck();
             Draw(m_SerializedHDProbe, this);
@@ -56,6 +64,11 @@ namespace UnityEditor.Rendering.HighDefinition
         protected virtual void OnEnable()
         {
             m_SerializedHDProbe = NewSerializedObject(serializedObject);
+            if (m_SerializedHDProbe == null)
+            {
+                fallbackEditor = Editor.CreateEditor(targets, Type.GetType("UnityEditor.ReflectionProbeEditor, UnityEditor"));
+                return;
+            }
 
             if (EditorPrefs.HasKey(k_ShowChromeGizmoKey))
                 m_ShowChromeGizmo = EditorPrefs.GetBool(k_ShowChromeGizmoKey);
@@ -75,11 +88,20 @@ namespace UnityEditor.Rendering.HighDefinition
 
         protected virtual void OnDisable()
         {
+            if (fallbackEditor != null)
+                return;
+
             foreach (var target in serializedObject.targetObjects)
             {
                 if (target != null && !target.Equals(null))
                     s_Editors.Remove((Component)target);
             }
+        }
+
+        void OnDestroy()
+        {
+            if (fallbackEditor != null)
+                DestroyImmediate(fallbackEditor);
         }
 
         protected virtual void Draw(TSerialized serialized, Editor owner)
@@ -116,6 +138,9 @@ namespace UnityEditor.Rendering.HighDefinition
 
         protected void OnSceneGUI()
         {
+            if (fallbackEditor != null)
+                return;
+
             EditorGUI.BeginChangeCheck();
             var soo = m_SerializedHDProbePerTarget[target];
             soo.Update();

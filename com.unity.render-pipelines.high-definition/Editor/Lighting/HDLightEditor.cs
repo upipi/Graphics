@@ -35,6 +35,10 @@ namespace UnityEditor.Rendering.HighDefinition
         {
             base.OnEnable();
 
+            // If we can't get the additional data, we have to fallback on the default editor
+            if (!CoreEditorUtils.CanGetAdditionalData<HDAdditionalLightData>(targets))
+                return;
+
             // Get & automatically add additional HD data if not present
             m_AdditionalLightDatas = CoreEditorUtils.GetAdditionalData<HDAdditionalLightData>(targets, HDAdditionalLightData.InitDefaultHDAdditionalLightData);
             m_SerializedHDLight = new SerializedHDLight(m_AdditionalLightDatas, settings);
@@ -45,6 +49,9 @@ namespace UnityEditor.Rendering.HighDefinition
 
         void OnDisable()
         {
+            if (m_AdditionalLightDatas == null)
+                return;
+
             // Update emissive mesh and light intensity when undo/redo
             Undo.undoRedoPerformed -= OnUndoRedo;
         }
@@ -66,6 +73,12 @@ namespace UnityEditor.Rendering.HighDefinition
 
         public override void OnInspectorGUI()
         {
+            if (m_AdditionalLightDatas == null)
+            {
+                base.OnInspectorGUI();
+                return;
+            }
+
             m_SerializedHDLight.Update();
 
             // Add space before the first collapsible area
@@ -109,6 +122,12 @@ namespace UnityEditor.Rendering.HighDefinition
 
         protected override void OnSceneGUI()
         {
+            if (m_AdditionalLightDatas == null)
+            {
+                base.OnSceneGUI();
+                return;
+            }
+
             // Each handles manipulate only one light
             // Thus do not rely on serialized properties
             HDLightType lightType = targetAdditionalData.type;

@@ -17,8 +17,17 @@ namespace UnityEditor.Rendering.HighDefinition
         Camera m_PreviewCamera;
         HDAdditionalCameraData m_PreviewAdditionalCameraData;
 
+        Editor fallbackEditor = null;
+
         void OnEnable()
         {
+            // If we can't get the additional data, we have to fallback on the default editor
+            if (!CoreEditorUtils.CanGetAdditionalData<HDAdditionalLightData>(targets))
+            {
+                fallbackEditor = Editor.CreateEditor(targets, typeof(CameraEditor));
+                return;
+            }
+
             m_SerializedCamera = new SerializedHDCamera(serializedObject);
 
             m_PreviewCamera = EditorUtility.CreateGameObjectWithHideFlags("Preview Camera", HideFlags.HideAndDontSave, typeof(Camera)).GetComponent<Camera>();
@@ -31,6 +40,9 @@ namespace UnityEditor.Rendering.HighDefinition
 
         void OnDisable()
         {
+            if (fallbackEditor != null)
+                return;
+
             if (m_PreviewTexture != null)
             {
                 m_PreviewTexture.Release();
@@ -40,8 +52,20 @@ namespace UnityEditor.Rendering.HighDefinition
             m_PreviewCamera = null;
         }
 
+        void OnDestroy()
+        {
+            if (fallbackEditor != null)
+                DestroyImmediate(fallbackEditor);
+        }
+
         public override void OnInspectorGUI()
         {
+            if (fallbackEditor != null)
+            {
+                fallbackEditor.OnInspectorGUI();
+                return;
+            }
+
             m_SerializedCamera.Update();
 
             HDCameraUI.Inspector.Draw(m_SerializedCamera, this);

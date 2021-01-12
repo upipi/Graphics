@@ -50,13 +50,18 @@ namespace UnityEditor.Rendering.HighDefinition
         protected override void OnEnable()
         {
             base.OnEnable();
-            InitializeTargetProbe();
+            if (fallbackEditor == null)
+                InitializeTargetProbe();
         }
 
         internal override HDProbe GetTarget(UnityEngine.Object editorTarget)
             => ((ReflectionProbe)editorTarget).GetComponent<HDAdditionalReflectionData>();
         protected override SerializedHDReflectionProbe NewSerializedObject(SerializedObject so)
         {
+            // If we can't get the additional data, we have to fallback on the default editor
+            if (!CoreEditorUtils.CanGetAdditionalData<HDAdditionalReflectionData>(targets))
+                return null;
+
             var additionalData = CoreEditorUtils.GetAdditionalData<HDAdditionalReflectionData>(so.targetObjects);
             var addSO = new SerializedObject(additionalData);
             return new SerializedHDReflectionProbe(so, addSO);

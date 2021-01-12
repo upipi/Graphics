@@ -40,8 +40,10 @@ Build_VFX_HDRP_Linux_Vulkan_Standalone_mono_Linear_trunk:
         UTR_VERSION: "current"
         TEST_FILTER: .*
     commands:
-      -  sudo -H pip install --upgrade pip
-      -  sudo -H pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
+      -  curl -L https://artifactory.prd.it.unity3d.com/artifactory/api/gpg/key/public | sudo apt-key add -
+      -  sudo sh -c "echo 'deb https://artifactory.prd.it.unity3d.com/artifactory/unity-apt-local bionic main' > /etc/apt/sources.list.d/unity.list"
+      -  sudo apt update
+      -  sudo apt install unity-downloader-cli
       -  curl -s https://artifactory.internal.unity3d.com/core-automation/tools/utr-standalone/utr --output utr
       -  chmod +x utr
       -  sudo unity-downloader-cli -u {{editor_versions.trunk_latest_internal.linux.revision}} -c editor -c il2cpp  --wait --published-only
@@ -65,8 +67,10 @@ VFX_HDRP_Linux_Vulkan_playmode_mono_Linear_trunk:
         UTR_VERSION: "current"
         TEST_FILTER: .*
     commands:
-      -  sudo -H pip install --upgrade pip
-      -  sudo -H pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
+      -  curl -L https://artifactory.prd.it.unity3d.com/artifactory/api/gpg/key/public | sudo apt-key add -
+      -  sudo sh -c "echo 'deb https://artifactory.prd.it.unity3d.com/artifactory/unity-apt-local bionic main' > /etc/apt/sources.list.d/unity.list"
+      -  sudo apt update
+      -  sudo apt install unity-downloader-cli
       -  curl -s https://artifactory.internal.unity3d.com/core-automation/tools/utr-standalone/utr --output utr
       -  chmod +x utr
       -  sudo unity-downloader-cli -u {{editor_versions.trunk_latest_internal.linux.revision}} -c editor -c il2cpp  --wait --published-only
@@ -87,8 +91,10 @@ VFX_HDRP_Linux_Vulkan_editmode_mono_Linear_trunk:
         UTR_VERSION: "current"
         TEST_FILTER: .*
     commands:
-      -  sudo -H pip install --upgrade pip
-      -  sudo -H pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
+      -  curl -L https://artifactory.prd.it.unity3d.com/artifactory/api/gpg/key/public | sudo apt-key add -
+      -  sudo sh -c "echo 'deb https://artifactory.prd.it.unity3d.com/artifactory/unity-apt-local bionic main' > /etc/apt/sources.list.d/unity.list"
+      -  sudo apt update
+      -  sudo apt install unity-downloader-cli
       -  curl -s https://artifactory.internal.unity3d.com/core-automation/tools/utr-standalone/utr --output utr
       -  chmod +x utr
       -  sudo unity-downloader-cli -u {{editor_versions.trunk_latest_internal.linux.revision}} -c editor -c il2cpp  --wait --published-only
@@ -135,11 +141,13 @@ Build_VFX_HDRP_Linux_Vulkan_Standalone_mono_Linear_CUSTOM-REVISION:
         UTR_VERSION: "current"
         TEST_FILTER: .*
     commands:
-      -  sudo -H pip install --upgrade pip
-      -  sudo -H pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
+      -  curl -L https://artifactory.prd.it.unity3d.com/artifactory/api/gpg/key/public | sudo apt-key add -
+      -  sudo sh -c "echo 'deb https://artifactory.prd.it.unity3d.com/artifactory/unity-apt-local bionic main' > /etc/apt/sources.list.d/unity.list"
+      -  sudo apt update
+      -  sudo apt install unity-downloader-cli
       -  curl -s https://artifactory.internal.unity3d.com/core-automation/tools/utr-standalone/utr --output utr
       -  chmod +x utr
-      -  sudo unity-downloader-cli --source-file ../../unity_revision.txt -c editor -c il2cpp  --wait --published-only
+      -  sudo unity-downloader-cli --source-file unity_revision.txt -c editor -c il2cpp  --wait --published-only
       -  DISPLAY=:0.0 ./utr --artifacts_path=TestProjects/VisualEffectGraph_HDRP/test-results --build-only --editor-location=.Editor --extra-editor-arg="-colorspace=Linear" --extra-editor-arg="-executemethod" --extra-editor-arg="SetupProject.ApplySettings" --extra-editor-arg="vulkan" --extra-editor-arg="Linear" --extra-editor-arg="-playergraphicsapi=Vulkan" --platform=StandaloneLinux64 --player-save-path=players --scripting-backend=Mono2x --suite=playmode --testfilter=$TEST_FILTER --testproject=./TestProjects/VisualEffectGraph_HDRP --timeout=1200
     artifacts:
         logs:
@@ -164,11 +172,13 @@ VFX_HDRP_Linux_Vulkan_playmode_mono_Linear_CUSTOM-REVISION:
         UTR_VERSION: "current"
         TEST_FILTER: .*
     commands:
-      -  sudo -H pip install --upgrade pip
-      -  sudo -H pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
+      -  curl -L https://artifactory.prd.it.unity3d.com/artifactory/api/gpg/key/public | sudo apt-key add -
+      -  sudo sh -c "echo 'deb https://artifactory.prd.it.unity3d.com/artifactory/unity-apt-local bionic main' > /etc/apt/sources.list.d/unity.list"
+      -  sudo apt update
+      -  sudo apt install unity-downloader-cli
       -  curl -s https://artifactory.internal.unity3d.com/core-automation/tools/utr-standalone/utr --output utr
       -  chmod +x utr
-      -  sudo unity-downloader-cli --source-file ../../unity_revision.txt -c editor -c il2cpp  --wait --published-only
+      -  sudo unity-downloader-cli --source-file unity_revision.txt -c editor -c il2cpp  --wait --published-only
       -  DISPLAY=:0.0 ./utr --artifacts_path=TestProjects/VisualEffectGraph_HDRP/test-results --editor-location=.Editor --extra-editor-arg="-colorspace=Linear" --extra-editor-arg="-force-vulkan" --reruncount=2 --scripting-backend=Mono2x --suite=playmode --testfilter=$TEST_FILTER --testproject=./TestProjects/VisualEffectGraph_HDRP --zero-tests-are-ok=1
     artifacts:
         logs:
@@ -190,11 +200,13 @@ VFX_HDRP_Linux_Vulkan_editmode_mono_Linear_CUSTOM-REVISION:
         UTR_VERSION: "current"
         TEST_FILTER: .*
     commands:
-      -  sudo -H pip install --upgrade pip
-      -  sudo -H pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
+      -  curl -L https://artifactory.prd.it.unity3d.com/artifactory/api/gpg/key/public | sudo apt-key add -
+      -  sudo sh -c "echo 'deb https://artifactory.prd.it.unity3d.com/artifactory/unity-apt-local bionic main' > /etc/apt/sources.list.d/unity.list"
+      -  sudo apt update
+      -  sudo apt install unity-downloader-cli
       -  curl -s https://artifactory.internal.unity3d.com/core-automation/tools/utr-standalone/utr --output utr
       -  chmod +x utr
-      -  sudo unity-downloader-cli --source-file ../../unity_revision.txt -c editor -c il2cpp  --wait --published-only
+      -  sudo unity-downloader-cli --source-file unity_revision.txt -c editor -c il2cpp  --wait --published-only
       -  DISPLAY=:0.0 ./utr --artifacts_path=TestProjects/VisualEffectGraph_HDRP/test-results --editor-location=.Editor --extra-editor-arg="-colorspace=Linear" --extra-editor-arg="-force-vulkan" --extra-editor-arg="-playergraphicsapi=Vulkan" --platform=editmode --reruncount=2 --scripting-backend=Mono2x --suite=editor --testfilter=$TEST_FILTER --testproject=./TestProjects/VisualEffectGraph_HDRP --zero-tests-are-ok=1
     artifacts:
         logs:

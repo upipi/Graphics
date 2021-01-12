@@ -4,11 +4,13 @@ from ...shared.utr_utils import get_repeated_utr_calls
 
 def _cmd_base(project_folder, platform, utr_calls, editor):
     base = [ 
-        f'sudo -H pip install --upgrade pip',
-        f'sudo -H pip install unity-downloader-cli --index-url {UNITY_DOWNLOADER_CLI_URL} --upgrade',
+        f'curl -L https://artifactory.prd.it.unity3d.com/artifactory/api/gpg/key/public | sudo apt-key add -',
+        f'sudo sh -c "echo \'deb https://artifactory.prd.it.unity3d.com/artifactory/unity-apt-local bionic main\' > /etc/apt/sources.list.d/unity.list"',
+        f'sudo apt update',
+        f'sudo apt install unity-downloader-cli',
         f'curl -s {UTR_INSTALL_URL} --output utr',
         f'chmod +x utr',
-        f'sudo unity-downloader-cli { get_unity_downloader_cli_cmd(editor, platform["os"], cd=True) } {"".join([f"-c {c} " for c in platform["components"]])} --wait --published-only',
+        f'sudo unity-downloader-cli { get_unity_downloader_cli_cmd(editor, platform["os"]) } {"".join([f"-c {c} " for c in platform["components"]])} --wait --published-only',
     ]
     for utr_args in utr_calls:
         base.append(f'DISPLAY=:0.0 ./utr {" ".join(utr_args)}')

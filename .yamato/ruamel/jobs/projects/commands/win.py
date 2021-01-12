@@ -5,8 +5,8 @@ from ...shared.utr_utils import get_repeated_utr_calls
 def _cmd_base(project_folder, platform, utr_calls, editor):
     base = [
         f'curl -s {UTR_INSTALL_URL}.bat --output utr.bat',
-        f'pip install unity-downloader-cli --index-url {UNITY_DOWNLOADER_CLI_URL} --upgrade',
-        f'unity-downloader-cli { get_unity_downloader_cli_cmd(editor, platform["os"], cd=True) } {"".join([f"-c {c} " for c in platform["components"]])} --wait --published-only',
+        f'choco install unity-downloader-cli -y -s https://artifactory.prd.it.unity3d.com/artifactory/api/nuget/unity-choco-local',
+        f'unity-downloader-cli { get_unity_downloader_cli_cmd(editor, platform["os"]) } {"".join([f"-c {c} " for c in platform["components"]])} --wait --published-only',
     ]
     
     for utr_args in utr_calls:

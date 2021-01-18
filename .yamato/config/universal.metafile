@@ -10,6 +10,10 @@ test_platforms:
       #- [Win_DX11, Win_DX12, Win_Vulkan]: --timeout=2000
       #- [iPhone_Metal]: --timeout=1800
       - [all]: --timeout=3000
+  - type: Standalone
+    name: Standalone_XR
+    utr_flags:
+      - [all]: --extra-editor-arg="-xr-reuse-tests"
   - type: playmode
   - type: playmode
     name: playmode_cache
@@ -63,6 +67,7 @@ platforms:
         exclude_test_platforms:
           - name: playmode_XR
           - name: Standalone
+          - name: Standalone_XR
           - name: Standalone_cache
     build_configs:
       - name: mono
@@ -73,10 +78,12 @@ platforms:
       - name: OpenGLCore
         exclude_test_platforms:
           - name: Standalone
+          - name: Standalone_XR
           - name: Standalone_cache
           - name: playmode_XR
       - name: Vulkan
         exclude_test_platforms:
+          - name: Standalone_XR
           - name: playmode_XR
     build_configs:
       - name: mono
@@ -88,12 +95,14 @@ platforms:
         exclude_test_platforms:
           - name: playmode
           - name: editmode
+          - name: Standalone_XR
           - name: playmode_XR
           - name: playmode_cache
       - name: Vulkan
         exclude_test_platforms:
           - name: playmode
           - name: editmode
+          - name: Standalone_XR
           - name: playmode_XR
           - name: playmode_cache
     build_configs:
@@ -106,6 +115,7 @@ platforms:
         exclude_test_platforms:
           - name: playmode
           - name: editmode
+          - name: Standalone_XR
           - name: playmode_XR
           - name: playmode_cache
     build_configs:
@@ -120,6 +130,7 @@ pr:
       color_space: Linear
       test_platforms:
         - Standalone_cache
+        - Standalone_XR
         - playmode_XR
         - editmode
     - platform: Win
@@ -223,14 +234,16 @@ nightly:
       color_space: Linear
       test_platforms:
         - playmode_cache
-        # - playmode_XR
+        - Standalone_XR
+        - playmode_XR
     - platform: Win
       api: Vulkan
       build_config: mono
       color_space: Linear
       test_platforms:
         - playmode_cache
-        # - playmode_XR
+        - Standalone_XR
+        - playmode_XR
     - platform: Linux
       api: Vulkan
       build_config: mono
